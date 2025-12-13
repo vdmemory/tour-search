@@ -1,0 +1,30 @@
+.input {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.inputWrapper {
+    position: relative;
+
+    & .loader {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 0;
+
+        & > div {
+            width: 20px;
+            height: 20px;
+            border-width: 2px;
+            border-top-width: 2px;
+        }
+    }
+}
