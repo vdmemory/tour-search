@@ -18,10 +18,10 @@
 .itemName {
     font-size: 14px;
     font-weight: 500;
-    color: #333333;
+    color: var(--color-text-primary);
 }
 
 .itemDetails {
     font-size: 12px;
-    color: #757575;
+    color: var(--color-text-secondary);
 }

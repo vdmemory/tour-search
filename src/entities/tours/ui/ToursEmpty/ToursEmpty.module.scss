@@ -1,0 +1,25 @@
+.emptyResult {
+    width: 100%;
+    max-width: 700px;
+    margin: 25px auto 0;
+    padding: 25px;
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+}
+
+.empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.emptyIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.emptyText {
+    font-size: 18px;
+    font-weight: 500;
+}

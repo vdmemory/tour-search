@@ -3,12 +3,11 @@
 import React from "react";
 import { Dropdown } from "@/shared/ui/Dropdown/Dropdown";
 import { Input } from "@/shared/ui/Input/Input";
-import { GeoEntity } from "../model/types";
-import { DirectoryContent } from "./DirectoryItemContent/DirectoryItemContent";
-import { getDirectoryIcon } from "../lib/getDirectoryIcon";
-import { getDirectoryDetails } from "../lib/getDirectoryDetails";
-import styles from "./DirectoryInput.module.scss";
 import { Loader } from "@/shared/ui/Loader/Loader";
+import { GeoEntity } from "@/entities/tours";
+import { DirectoryContent } from "../DirectoryItemContent/DirectoryItemContent";
+import { getDirectoryDetails, getDirectoryIcon } from "../../lib";
+import styles from "./DirectoryInput.module.scss";
 
 interface DirectoryInputProps {
     items: GeoEntity[];

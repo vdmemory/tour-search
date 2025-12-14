@@ -1,4 +1,4 @@
-import { ENTITY_TYPE, GeoEntity } from "../model/types";
+import { ENTITY_TYPE, GeoEntity } from "@/entities/tours";
 
 export const getDirectoryIcon = ({ type }: GeoEntity): string => {
     switch (type) {

@@ -1,10 +1,18 @@
+import { ErrorResponse } from "@/entities/tours";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export const toError = async (error: unknown): Promise<FetchBaseQueryError> => {
     if (error instanceof Response) {
+        let errorData: unknown;
+        try {
+            errorData = (await error.json()) as ErrorResponse;
+        } catch (e) {
+            errorData = { message: "Помилка парсингу відповіді API" };
+        }
+
         return {
             status: error.status,
-            data: await error.json(),
+            data: errorData,
         };
     }
 
@@ -13,20 +21,24 @@ export const toError = async (error: unknown): Promise<FetchBaseQueryError> => {
     }
 
     return {
-        status: 500,
-        data: {
-            message: (error as Error)?.message ?? "Unknown error",
-        },
+        status: "FETCH_ERROR",
+        error: `Невідома помилка: ${(error as Error)?.message ?? "Unknown error"}`,
     };
 };
 
-export const run = async <T>(factory: () => Promise<Response>) => {
+export const run = async <T>(
+    factory: () => Promise<Response>,
+): Promise<{ data: T } | { error: FetchBaseQueryError }> => {
     try {
         const response = await factory();
-        const payload = (await response.json()) as T;
 
-        return { data: payload } as const;
+        if (!response.ok) {
+            throw response;
+        }
+
+        const payload = (await response.json()) as T;
+        return { data: payload };
     } catch (error) {
-        return { error: await toError(error) } as const;
+        return { error: await toError(error) };
     }
 };

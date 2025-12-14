@@ -1,27 +1,30 @@
 "use client";
 
-import { DirectoryInput, GeoEntity } from "@/entities/directory";
+import { DirectoryInput } from "../DirectoryInput/DirectoryInput";
+import { GeoEntity, selectSelectedDestination, setSelectedDestination } from "@/entities/tours";
 import { Button } from "@/shared/ui/Button/Button";
 import { useRef } from "react";
-import { useClickOutside } from "@/shared/lib";
+import { useAppDispatch, useAppSelector, useClickOutside } from "@/shared/lib";
+import { useGeoSearchData, useFormDropdown, useFormInput } from "../../model";
 import styles from "./SearchForm.module.scss";
-import { useGeoSearchData, useDropdownSelection, useFormDropdown, useFormInput } from "../model";
+import { useSearchTours } from "../../model/useSearchTours";
 
 export const SearchForm = () => {
     const input = useFormInput();
-    const selection = useDropdownSelection();
+    const dispatch = useAppDispatch();
+    const selection = useAppSelector(selectSelectedDestination);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const dropdown = useFormDropdown(selection.selectedType);
+    const dropdown = useFormDropdown();
     useClickOutside(dropdownRef, dropdown.close);
 
-    const { isLoading, items } = useGeoSearchData({
+    const { isLoading: isLoadingGeoSearch, items } = useGeoSearchData({
         inputValue: input.value,
-        selectedType: selection.selectedType,
     });
+    const { startSearchTours, isSearchingTours } = useSearchTours();
 
     const handleSelect = (item: GeoEntity) => {
-        selection.select(item);
+        dispatch(setSelectedDestination(item));
         input.setValue(item.name);
         dropdown.close();
     };
@@ -30,18 +33,16 @@ export const SearchForm = () => {
         input.setValue(newValue);
         dropdown.open();
 
-        if (selection.selectedType === "country") {
-            selection.reset();
+        if (selection?.type === "country") {
+            dispatch(setSelectedDestination(null));
         }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dropdown.close();
-        console.log("Form submitted", {
-            selectedGeo: selection.selected,
-            inputValue: input.value,
-        });
+        if (!selection) return;
+        startSearchTours(String(selection.id));
     };
 
     return (
@@ -49,14 +50,14 @@ export const SearchForm = () => {
             <DirectoryInput
                 ref={dropdownRef}
                 isOpen={dropdown.isOpen}
-                isLoading={isLoading}
+                isLoading={isLoadingGeoSearch}
                 items={items}
                 value={input.value}
                 onChange={handleChange}
                 onFocus={dropdown.open}
                 onSelect={handleSelect}
             />
-            <Button fullWidth type="submit">
+            <Button fullWidth type="submit" disabled={!selection || isSearchingTours}>
                 Знайти
             </Button>
         </form>

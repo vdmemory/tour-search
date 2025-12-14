@@ -1,63 +1,39 @@
 import {
     ENTITY_TYPE,
-    GeoEntity,
+    selectSelectedType,
     transformCountries,
     useGetCountriesQuery,
     useSearchGeoQuery,
-} from "@/entities/directory";
+} from "@/entities/tours";
 import { DEBOUNCE_DELAY } from "@/shared/config/constants";
-import { useDebounce } from "@/shared/lib";
-import { useMemo } from "react";
+import { useAppSelector, useDebounce } from "@/shared/lib";
 import { getSearchQuery } from "../lib/getSearchQuery";
 
-interface GeoSearchDataParams {
+interface Params {
     inputValue: string;
-    selectedType: GeoEntity["type"] | undefined;
 }
 
-interface GeoSearchResult {
-    isCountriesMode: boolean;
-    isLoading: boolean;
-    items: GeoEntity[];
-    searchQuery: string | undefined;
-}
+export const useGeoSearchData = ({ inputValue }: Params) => {
+    const type = useAppSelector(selectSelectedType);
+    const debouncedInput = useDebounce(inputValue, DEBOUNCE_DELAY);
+    const isCountriesMode = !debouncedInput || type === ENTITY_TYPE.COUNTRY;
+    const searchQuery = getSearchQuery(type, debouncedInput);
 
-export const useGeoSearchData = ({
-    inputValue,
-    selectedType,
-}: GeoSearchDataParams): GeoSearchResult => {
-    const debouncedValue = useDebounce(inputValue, DEBOUNCE_DELAY);
-    const isCountriesMode =
-        (inputValue === "" && !selectedType) || selectedType === ENTITY_TYPE.COUNTRY;
-    const searchQuery = getSearchQuery(selectedType, debouncedValue);
-
-    const { data: countriesMap = {}, isLoading: isLoadingCountries } = useGetCountriesQuery(
+    const { data: countriesMap = {}, isLoading: countriesLoading } = useGetCountriesQuery(
         undefined,
         {
             skip: !isCountriesMode,
         },
     );
 
-    const countriesData: GeoEntity[] = useMemo(
-        () => transformCountries(countriesMap),
-        [countriesMap],
-    );
-
-    const { data: geoData = [], isLoading: isLoadingGeo } = useSearchGeoQuery(searchQuery, {
-        skip: !searchQuery,
+    const { data: geoItems = [], isLoading: geoLoading } = useSearchGeoQuery(searchQuery, {
+        skip: isCountriesMode || !searchQuery,
     });
-
-    const isLoading = isCountriesMode ? isLoadingCountries : isLoadingGeo;
-
-    const items = useMemo(() => {
-        if (isCountriesMode) return countriesData;
-        return geoData;
-    }, [isCountriesMode, countriesData, geoData]);
 
     return {
         isCountriesMode,
-        isLoading,
-        items,
         searchQuery,
+        isLoading: isCountriesMode ? countriesLoading : geoLoading,
+        items: isCountriesMode ? transformCountries(countriesMap) : geoItems,
     };
 };

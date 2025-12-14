@@ -1,4 +1,4 @@
-import { CountriesMap, GeoEntity, Country } from "@/entities/directory/model/types";
+import { CountriesMap, GeoEntity, Country } from "@/entities/tours/model/types";
 
 export const transformCountries = (countriesMap: CountriesMap): GeoEntity[] => {
     return Object.values(countriesMap).map((country: Country) => ({

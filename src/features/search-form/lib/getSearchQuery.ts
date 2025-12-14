@@ -1,4 +1,4 @@
-import { ENTITY_TYPE, GeoEntity } from "@/entities/directory";
+import { ENTITY_TYPE, GeoEntity } from "@/entities/tours";
 
 export const getSearchQuery = (type: GeoEntity["type"] | undefined, value: string) => {
     if (type === ENTITY_TYPE.COUNTRY) {

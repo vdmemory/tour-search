@@ -3,34 +3,34 @@
     padding: 12px 16px;
     font-size: 16px;
     line-height: 1.5;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: var(--color-bg);
     transition: border-color 0.2s ease;
     outline: none;
 
     &:hover {
-        border-color: #c0c0c0;
+        border-color: var(--color-border-strong);
     }
 
     &:focus {
-        border-color: #2196f3;
+        border-color: var(--color-accent);
     }
 
     &::placeholder {
-        color: #9e9e9e;
+        color: var(--color-text-placeholder);
     }
 
     &:disabled {
-        background-color: #f5f5f5;
+        background-color: var(--color-text-disabled);
         cursor: not-allowed;
     }
 }
 
 .inputError {
-    border-color: #f44336;
+    border-color: var(--color-border-error);
 
     &:focus {
-        border-color: #f44336;
+        border-color: var(--color-border-error);
     }
 }

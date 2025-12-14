@@ -1,3 +1,20 @@
+// Базові сутності
+export type Country = { id: string; name: string; flag: string };
+export type City = { id: number; name: string };
+export type Hotel = {
+    id: number;
+    name: string;
+    img: string;
+    cityId: number;
+    cityName: string;
+    countryId: string;
+    countryName: string;
+};
+
+// Колекції у вигляді словників
+export type CountriesMap = Record<string, Country>;
+export type HotelsMap = Record<string, Hotel>;
+
 // Пошук цін (оффер)
 export type PriceOffer = {
     id: string; // UUID
@@ -10,6 +27,20 @@ export type PriceOffer = {
 
 // Відповідь пошуку цін (готові результати)
 export type PricesMap = Record<string, PriceOffer>;
+
+// Підказки гео-пошуку
+export type GeoEntity =
+    | (Country & { type: "country" })
+    | (City & { type: "city" })
+    | (Hotel & { type: "hotel" });
+
+export const ENTITY_TYPE = {
+    COUNTRY: "country",
+    CITY: "city",
+    HOTEL: "hotel",
+} as const;
+
+export type GeoResponse = Record<string, GeoEntity>;
 
 // Уніфікована помилка
 export type ErrorResponse = {
