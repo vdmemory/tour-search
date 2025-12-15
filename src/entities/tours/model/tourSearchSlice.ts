@@ -5,6 +5,7 @@ export interface SearchState {
     selectedDestination: GeoEntity | null;
     searchToken: string | null;
     isSearching: boolean;
+    searchSessionId: GeoEntity["id"] | null;
     searchResults: PricesMap | null;
     searchError: string | null;
     retryCount: number;
@@ -15,6 +16,7 @@ const initialState: SearchState = {
     selectedDestination: null,
     searchToken: null,
     isSearching: false,
+    searchSessionId: null,
     searchResults: null,
     searchError: null,
     retryCount: 0,
@@ -27,7 +29,6 @@ const tourSearchSlice = createSlice({
     reducers: {
         setSelectedDestination: (state, action: PayloadAction<GeoEntity | null>) => {
             state.selectedDestination = action.payload;
-            state.searchResults = null;
             state.searchError = null;
         },
         startSearch: (state) => {
@@ -46,6 +47,7 @@ const tourSearchSlice = createSlice({
             state.waitUntil = action.payload;
         },
         setSearchResults: (state, action: PayloadAction<PricesMap>) => {
+            state.searchSessionId = state.selectedDestination?.id || null;
             state.searchResults = action.payload;
             state.isSearching = false;
             state.searchToken = null;

@@ -4,16 +4,19 @@ import styles from "./ToursPending.module.scss";
 interface ToursPendingProps {
     maxRetries?: number;
     retryCount?: number;
+    message?: string;
 }
 
-export const ToursPending = ({ retryCount, maxRetries }: ToursPendingProps) => {
+const DEFAULT_MESSAGE = "Шукаємо тури...";
+
+export const ToursPending = ({ retryCount, maxRetries, message }: ToursPendingProps) => {
     const showRetryInfo = retryCount !== undefined && maxRetries !== undefined;
 
     return (
         <div className={styles.pendingResult}>
             <div className={styles.pending}>
                 <Loader />
-                <p className={styles.pendingText}>Шукаємо тури...</p>
+                <p className={styles.pendingText}>{message || DEFAULT_MESSAGE}</p>
                 {showRetryInfo && retryCount! > 0 && (
                     <p className={styles.retryInfo}>
                         Спроба {retryCount + 1} з {maxRetries}

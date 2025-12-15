@@ -9,17 +9,34 @@ import {
 } from "@/entities/tours";
 import { MAX_RETRIES } from "@/shared/config/constants";
 import { useAppSelector } from "@/shared/lib/redux/hooks";
+import { useAggregatedTours } from "../model/useAggregatedTours";
 
 export const SearchResult = () => {
-    const { isSearching, searchResults, searchError, retryCount } =
-        useAppSelector(searchStateSelector);
+    const {
+        isSearching,
+        searchResults,
+        searchError,
+        retryCount,
+        selectedDestination,
+        searchSessionId,
+    } = useAppSelector(searchStateSelector);
 
-    const resultsCount = searchResults ? Object.keys(searchResults).length : null;
+    const { toursWithHotels } = useAggregatedTours();
+
+    const isEmptyResults =
+        searchResults &&
+        toursWithHotels.length === 0 &&
+        searchSessionId === selectedDestination?.id;
+
+    const isResultsAvailable = searchResults && toursWithHotels.length > 0;
 
     if (isSearching) return <ToursPending retryCount={retryCount} maxRetries={MAX_RETRIES} />;
+
     if (searchError) return <ToursError error={searchError} />;
-    if (resultsCount !== null && resultsCount === 0) return <ToursEmpty />;
-    if (resultsCount && resultsCount > 0) return <ToursList />;
+
+    if (isEmptyResults) return <ToursEmpty />;
+
+    if (isResultsAvailable) return <ToursList tours={toursWithHotels} />;
 
     return null;
 };

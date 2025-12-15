@@ -1,0 +1,84 @@
+.imageContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 66.67%;
+    overflow: hidden;
+    background-color: var(--color-bg-primary);
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hotelName {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+.location {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dates {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.currency {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-left: 4px;
+}
+
+.footer {
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+}
+
+.link {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--color-accent-hover);
+        text-decoration: underline;
+    }
+}

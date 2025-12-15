@@ -60,7 +60,10 @@ export type GetSearchPricesResponse = {
     prices: PricesMap;
 };
 
-export type StopSearchResponse = {
-    status: "cancelled";
-    message: string;
+export type GetSearchHotelsResponse = {
+    hotels: HotelsMap;
+};
+
+export type TourWithHotel = PriceOffer & {
+    hotel: Hotel;
 };

@@ -4,11 +4,13 @@ import {
     GeoEntity,
     GeoResponse,
     GetSearchPricesResponse,
+    HotelsMap,
     StartSearchResponse,
 } from "../model/types";
 
 import {
     getCountries,
+    getHotels,
     getSearchPrices,
     run,
     searchGeo,
@@ -55,6 +57,10 @@ export const tourApi = baseApi.injectEndpoints({
                       ]
                     : ["Prices"],
         }),
+        getHotels: build.query<HotelsMap, string>({
+            queryFn: (countryId) => run<HotelsMap>(() => getHotels(countryId)),
+            providesTags: (_result, _error, arg) => [{ type: "Hotels", id: arg }],
+        }),
     }),
 });
 
@@ -63,4 +69,5 @@ export const {
     useSearchGeoQuery,
     useStartSearchMutation,
     useLazyGetSearchPricesQuery,
+    useLazyGetHotelsQuery,
 } = tourApi;

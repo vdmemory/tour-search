@@ -364,96 +364,10 @@ export const getSearchPrices = (token) => {
     return Promise.resolve(response);
 };
 
-export const stopSearchPrices = (token) => {
-    if (!token || !db.hasSearch(token)) {
-        const error = {
-            code: 404,
-            error: true,
-            message: "Search with this token was not found.",
-        };
-        const response = new Response(JSON.stringify(error), {
-            status: 404,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        return Promise.reject(response);
-    }
-
-    db.deleteSearch(token);
-
-    const body = {
-        message: "Search has been cancelled successfully.",
-    };
-    const response = new Response(JSON.stringify(body), {
-        status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    return Promise.resolve(response);
-};
-
 export const getHotels = (countryID) => {
     const hotels = db.getHotelsByCountryID(countryID);
 
     const response = new Response(JSON.stringify(hotels), {
-        status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    return Promise.resolve(response);
-};
-
-export const getHotel = (hotelId) => {
-    const hotel = db.getHotel(hotelId);
-
-    if (!hotel) {
-        const error = {
-            code: 404,
-            error: true,
-            message: "Hotel with this ID was not found.",
-        };
-        const resp = new Response(JSON.stringify(error), {
-            status: 404,
-            headers: { "Content-Type": "application/json" },
-        });
-        return Promise.reject(resp);
-    }
-
-    const response = new Response(JSON.stringify(hotel), {
-        status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    return Promise.resolve(response);
-};
-
-export const getPrice = (priceId) => {
-    if (!priceId) {
-        const error = {
-            code: 404,
-            error: true,
-            message: "Offer with this ID was not found.",
-        };
-        const response = new Response(JSON.stringify(error), {
-            status: 404,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        return Promise.reject(response);
-    }
-
-    const price = Object.assign(Price.generate(), { id: priceId });
-    const response = new Response(JSON.stringify(price), {
         status: 200,
         headers: {
             "Content-Type": "application/json",

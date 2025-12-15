@@ -1,0 +1,23 @@
+.listResult {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 25px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+
+    @media (max-width: 570px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.count {
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
