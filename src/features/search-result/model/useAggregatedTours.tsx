@@ -7,7 +7,8 @@ import type { PriceOffer, HotelsMap, TourWithHotel } from "@/entities/tours";
 export const useAggregatedTours = () => {
     const { searchResults, selectedDestination } = useAppSelector(searchStateSelector);
 
-    const [fetchHotels, { data: hotels, isLoading: isHotelsLoading }] = useLazyGetHotelsQuery();
+    const [fetchHotels, { data: hotels, isLoading: isHotelsLoading, error: hotelsQueryError }] =
+        useLazyGetHotelsQuery();
 
     // Fetch hotels when we have search results
     useEffect(() => {
@@ -50,5 +51,6 @@ export const useAggregatedTours = () => {
     return {
         toursWithHotels,
         isHotelsLoading,
+        hotelsError: hotelsQueryError,
     };
 };

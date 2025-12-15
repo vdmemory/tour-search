@@ -21,7 +21,7 @@ export const SearchResult = () => {
         searchSessionId,
     } = useAppSelector(searchStateSelector);
 
-    const { toursWithHotels } = useAggregatedTours();
+    const { toursWithHotels, isHotelsLoading, hotelsError } = useAggregatedTours();
 
     const isEmptyResults =
         searchResults &&
@@ -33,6 +33,12 @@ export const SearchResult = () => {
     if (isSearching) return <ToursPending retryCount={retryCount} maxRetries={MAX_RETRIES} />;
 
     if (searchError) return <ToursError error={searchError} />;
+
+    if (isHotelsLoading) {
+        return <ToursPending message="Завантаження деталей готелів..." />;
+    }
+
+    if (hotelsError) return <ToursError error="Помилка завантаження деталей готелів." />;
 
     if (isEmptyResults) return <ToursEmpty />;
 
